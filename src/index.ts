@@ -23,6 +23,10 @@ app.use(setJsonContentType);
 // router
 app.use(router);
 
+import pool from './db/index';
+
+pool.connect()
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
