@@ -1,9 +1,16 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
+
+import { setJsonContentType } from './middlewares/json';
+
 const app = express();
 const port = 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Hello World!' });
+app.use(cors());
+app.use(setJsonContentType);
+
+app.get('/', (_, res: Response) => {
+  res.status(200).json({ message: 'Hello, world!' });
   return;
 });
 
