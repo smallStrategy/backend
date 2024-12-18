@@ -9,6 +9,7 @@ import bodyParser from 'body-parser';
 
 import router from './routes/route'
 
+import pool from './db/index';
 import { setJsonContentType } from './middlewares/json';
 
 const app = express();
@@ -23,9 +24,10 @@ app.use(setJsonContentType);
 // router
 app.use(router);
 
-import pool from './db/index';
-
+// DB TEST
 pool.connect()
+  .then(() => console.log('PostgreSQL connected successfully'))
+  .catch(err => console.error('Error connecting to PostgreSQL', err));
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

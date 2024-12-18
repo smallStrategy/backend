@@ -12,9 +12,4 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || '5432', 10),  // .env에 정의된 DB 포트
 });
 
-// 연결 테스트
-pool.connect()
-  .then(() => console.log('PostgreSQL connected successfully'))
-  .catch(err => console.error('Error connecting to PostgreSQL', err));
-
 export default pool;
