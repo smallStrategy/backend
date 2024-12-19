@@ -7,12 +7,12 @@ interface SignUpProps {
   username: string;
   email: string;
   password: string;
+  profile?: string;
 }
 
 const userRepository = Database.getRepository(User);
 
 export const signUp = async (signUpProps : SignUpProps) => {
-  // Check if user already exists [ username, email ]
   const existingUser = await userRepository.findOne({
     where: [
       { username: signUpProps.username },

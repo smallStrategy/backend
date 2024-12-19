@@ -8,11 +8,11 @@ import {
 
 // @route put /users/
 // @body { username, email, password, profile } 
-// TODO : profile 이미지 추가 기능 구현
 export const signUp = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
-    const createdUser = await signUpService({username, email, password});
+    const profile = req.file?.filename;
+    const createdUser = await signUpService({username, email, password, profile});
     responseSuccess(res, createdUser, 'User created successfully', 201);
     return
   } catch (error) {
