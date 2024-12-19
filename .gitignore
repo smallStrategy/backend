@@ -1,5 +1,11 @@
+# Packkages
 node_modules
 
+# Build files
 dist
 
+# media 
+media
+
+# Environment variables
 .env

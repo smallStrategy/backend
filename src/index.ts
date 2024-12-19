@@ -3,14 +3,22 @@ dotenv.config();
 
 import 'reflect-metadata'; // Required for TypeORM
 
+// Packages
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
+// Routes
 import router from './routes/route'
 
+// Database
 import { Database } from './db/index';
+
+// Middlewares
 import { setJsonContentType } from './middlewares/json';
+
+// Config
+import { initialConfigFolder } from './utils/config';
 
 const app = express();
 const PORT = process.env.PORT || 8090;
@@ -33,6 +41,9 @@ Database.initialize()
   .catch((err) => {
     console.error('Error during Data Source initialization', err);
   });
+
+// Initial Settings
+initialConfigFolder();
 
 // Server Start
 app.listen(PORT, () => {
