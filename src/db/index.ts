@@ -1,15 +1,14 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import { DataSource } from 'typeorm';
 
-import { Pool } from 'pg'; 
-
-// PostgreSQL 연결 설정
-const pool = new Pool({
-  user: process.env.DB_USER,      // .env에 정의된 DB 사용자
-  host: process.env.DB_HOST,      // .env에 정의된 DB 호스트
-  database: process.env.DB_NAME,  // .env에 정의된 DB 이름
-  password: process.env.DB_PASSWORD, // .env에 정의된 DB 비밀번호
-  port: parseInt(process.env.DB_PORT || '5432', 10),  // .env에 정의된 DB 포트
+// 데이터 소스 설정
+export const Database = new DataSource({
+  type: 'postgres',
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT || '5432', 10),
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  synchronize: true, // 개발 환경에서만 true (자동 마이그레이션)
+  logging: true, // 쿼리 로그 활성화
+  entities: ['./src/db/entities/*.ts'], // 엔티티 경로
 });
-
-export default pool;

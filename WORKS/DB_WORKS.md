@@ -1,7 +1,7 @@
 데이터베이스 선택 및 초기 설정 (프로젝트 설정 단계와 함께)
 
-- PostgreSQL과 같은 관계형 데이터베이스 또는 MongoDB와 같은 NoSQL 데이터베이스 선택
-- Prisma ORM 설정 (TypeScript와 잘 통합되며 Next.js와 호환성이 좋음)
+- [x] PostgreSQL과 같은 관계형 데이터베이스 또는 MongoDB와 같은 NoSQL 데이터베이스 선택
+- [x] typeORM 설정 (TypeScript와 잘 통합되며 Next.js와 호환성이 좋음)
 
 
 

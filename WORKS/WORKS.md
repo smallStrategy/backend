@@ -1,6 +1,6 @@
 프로젝트 설정 및 기본 구조
 
-- Next.js 프로젝트 초기화 (App Router 사용)
+- 프로젝트 초기화 (App Router 사용)
 - TypeScript 및 Tailwind CSS 설정
 - 기본 레이아웃 컴포넌트 생성
 
