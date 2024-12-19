@@ -1,5 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
+export interface UserModel {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+  bio: string;
+  profile: string;
+  role: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('increment')
@@ -30,3 +42,4 @@ export class User {
   @UpdateDateColumn()
   updatedAt!: Date;
 }
+
