@@ -20,6 +20,10 @@ export class User {
   @Column({ type: 'varchar', length: 255, nullable: true })
   profile!: string;
 
+  // 권한 ( 0: 일반 사용자, 1: 관리자 )
+  @Column({ type: 'tinyint', default: 0 })
+  role!: number;
+
   @CreateDateColumn()
   createdAt!: Date;
 
