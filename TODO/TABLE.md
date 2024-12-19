@@ -4,7 +4,7 @@
 
 ## 1. 사용자 관리 테이블 설정
 
-- [ ] **사용자 테이블 (Users)**: 사용자의 기본 정보와 계정 관리를 위한 테이블을 생성합니다.
+- [x] **사용자 테이블 (Users)**: 사용자의 기본 정보와 계정 관리를 위한 테이블을 생성합니다.
   - `id`, `email`, `password_hash`, `username`, `profile_picture`, `bio`, `created_at`, `updated_at` 필드 추가
 
 ## 2. 게시글 관리 테이블 설정

@@ -1,22 +1,28 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity('users') // 데이터베이스 테이블 이름
+@Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id!: number; // 기본 키
+  @PrimaryGeneratedColumn('increment')
+  id!: number;
 
   @Column({ type: 'varchar', length: 100 })
-  name!: string; // 사용자 이름
+  username!: string;
 
   @Column({ type: 'varchar', length: 200, unique: true })
-  email!: string; // 이메일 (유니크)
+  email!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  password!: string; // 비밀번호
+  password!: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bio!: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  profile!: string;
 
   @CreateDateColumn()
-  createdAt!: Date; // 생성일자 (자동 생성)
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt!: Date; // 수정일자 (자동 업데이트)
+  updatedAt!: Date;
 }

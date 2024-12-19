@@ -9,6 +9,6 @@ export const Database = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   synchronize: true, // 개발 환경에서만 true (자동 마이그레이션)
-  logging: true, // 쿼리 로그 활성화
+  logging: false, // 쿼리 로그 활성화
   entities: ['./src/db/entities/*.ts'], // 엔티티 경로
 });
