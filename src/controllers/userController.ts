@@ -16,8 +16,11 @@ export const signUp = async (req: Request, res: Response) => {
     responseSuccess(res, createdUser, 'User created successfully', 201);
     return
   } catch (error) {
-    const err = error as Error;
-    responseError(res, err.message, 'Failed to create user', 400);
+    if (error instanceof Error) {
+      responseError(res, error.message, 'Failed to create user', 400);
+      return
+    }
+    responseError(res, 'Internal Server Error', 'Failed to create user', 500);
     return
   }
 }

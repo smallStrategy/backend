@@ -13,22 +13,29 @@ interface SignUpProps {
 const userRepository = Database.getRepository(User);
 
 export const signUp = async (signUpProps : SignUpProps) => {
-  const existingUser = await userRepository.findOne({
-    where: [
-      { username: signUpProps.username },
-      { email: signUpProps.email }
-    ]
-  });
-  if (existingUser) {
-    throw new Error('User already exists');
+  try {
+    const existingUser = await userRepository.findOne({
+      where: [
+        { username: signUpProps.username },
+        { email: signUpProps.email }
+      ]
+    });
+    if (existingUser) {
+      throw new Error('User already exists');
+    }
+    // Hash password
+    const hashedPassword = hashPassword({password: signUpProps.password});
+    // Create new user
+    const newUser = userRepository.create({
+      ...signUpProps,
+      password: hashedPassword
+    })
+    // Save user to database
+    return await userRepository.save(newUser);
+  } catch(error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Internal Server Error');
   }
-  // Hash password
-  const hashedPassword = hashPassword({password: signUpProps.password});
-  // Create new user
-  const newUser = userRepository.create({
-    ...signUpProps,
-    password: hashedPassword
-  })
-  // Save user to database
-  return await userRepository.save(newUser);
 }
