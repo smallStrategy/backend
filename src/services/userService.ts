@@ -12,6 +12,7 @@ interface SignUpProps {
 const userRepository = Database.getRepository(User);
 
 export const signUp = async (signUpProps : SignUpProps) => {
+  // Check if user already exists [ username, email ]
   const existingUser = await userRepository.findOne({
     where: [
       { username: signUpProps.username },
@@ -21,11 +22,13 @@ export const signUp = async (signUpProps : SignUpProps) => {
   if (existingUser) {
     throw new Error('User already exists');
   }
-  // 비밀번호 암호화
+  // Hash password
   const hashedPassword = hashPassword({password: signUpProps.password});
+  // Create new user
   const newUser = userRepository.create({
     ...signUpProps,
     password: hashedPassword
   })
+  // Save user to database
   return await userRepository.save(newUser);
 }

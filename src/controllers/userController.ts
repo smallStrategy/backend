@@ -9,7 +9,6 @@ import {
 // @route put /users/
 // @body { username, email, password, profile } 
 // TODO : profile 이미지 추가 기능 구현
-// TODO : 
 export const signUp = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
