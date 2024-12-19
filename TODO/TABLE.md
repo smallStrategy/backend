@@ -1,11 +1,9 @@
 # 데이터베이스 테이블 설계 작업 순서
 
-이 프로젝트에서는 PostgreSQL을 사용하여 테크 매거진/블로그 플랫폼의 데이터베이스를 설계합니다. 아래는 각 테이블을 설정하고 관련 작업을 진행할 순서입니다.
-
 ## 1. 사용자 관리 테이블 설정
 
 - [x] **사용자 테이블 (Users)**: 사용자의 기본 정보와 계정 관리를 위한 테이블을 생성합니다.
-  - `id`, `email`, `password_hash`, `username`, `profile_picture`, `bio`, `created_at`, `updated_at` 필드 추가
+  - `id`, `email`, `password`, `username`, `profile`, `bio`, `created_at`, `updated_at` 필드 추가
 
 ## 2. 게시글 관리 테이블 설정
 
