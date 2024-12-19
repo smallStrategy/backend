@@ -21,7 +21,7 @@ export class User {
   profile!: string;
 
   // 권한 ( 0: 일반 사용자, 1: 관리자 )
-  @Column({ type: 'tinyint', default: 0 })
+  @Column({ type: 'int2', default: 0 })
   role!: number;
 
   @CreateDateColumn()
