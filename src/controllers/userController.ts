@@ -6,7 +6,8 @@ import {
   signUp as signUpService,
   validSignUpInput as validSignUpInputService,
   signIn as signInService,
-  validSignInInput as validSignInInputService
+  validSignInInput as validSignInInputService,
+  signOut as signOutService,
 } from '../services/userService';
 
 // @route put /users/
@@ -47,6 +48,25 @@ export const signIn = async (req: Request, res: Response) => {
       return
     }
     responseError(res, 'Internal Server Error', 'Failed to login', 500);
+    return
+  }
+}
+
+// 로그아아웃
+// @route post /users/logout
+// @header Authorization Bearer token
+export const signOut = async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization?.split('Bearer ')[1];
+    if (!token) {
+      responseError(res, 'Unauthorized', 'Token is required', 401);
+      return
+    }
+    await signOutService(token);
+    responseSuccess(res, undefined, 'User logged out successfully', 200);
+    return
+  } catch (error) {
+    responseError(res, 'Internal Server Error', 'Failed to logout', 500);
     return
   }
 }

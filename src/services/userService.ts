@@ -3,7 +3,7 @@ import { UserEntity } from '../db/entities/userEntity';
 import { UserTokenEntity } from '../db/entities/userTokenEntity';
 
 import { hashPassword, comparePassword } from '../utils/bcrypt';
-import { generateToken } from '../utils/jwtConfig';
+import { generateToken, decodeToken } from '../utils/jwtConfig';
 
 const userRepository = Database.getRepository(UserEntity);
 const userTokenRepository = Database.getRepository(UserTokenEntity);
@@ -110,5 +110,18 @@ export const signIn = async (signInProps: SignInProps): Promise<{ token: string,
       throw new Error(error.message);
     }
     throw new Error('Internal Server Error');
+  }
+}
+
+// 사용자 로그아웃 함수
+export const signOut = async (token: string): Promise<void> => {
+  try {
+    const decodedToken = decodeToken(token);
+    if (!decodedToken) {
+      throw new Error('Invalid token');
+    }
+    const { userId } = decodedToken;
+    await userTokenRepository.delete({ user: { id: userId } });
+  } catch (error) {
   }
 }

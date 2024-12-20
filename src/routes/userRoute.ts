@@ -7,12 +7,13 @@ import { uploadImage } from '../utils/multer';
 import { 
   signUp,
   signIn,
+  signOut,
 } from '../controllers/userController';
 
 const router = express.Router();
 
 router.post('/', uploadImage.single('profile'), signUp);
-router.post('/login', signIn);
-
+router.post('/sign-in', signIn);
+router.post('/sign-out', signOut);
 
 export default router;
