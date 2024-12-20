@@ -13,7 +13,7 @@ export interface UserModel {
 }
 
 @Entity('users')
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
