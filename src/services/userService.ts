@@ -3,6 +3,11 @@ import { User } from '../db/entities/userEntity';
 
 import { hashPassword } from '../utils/bcrypt';
 
+interface ValidUserInfoInput {
+  username: string;
+  email: string;
+}
+
 interface SignUpProps {
   username: string;
   email: string;
@@ -12,6 +17,15 @@ interface SignUpProps {
 
 const userRepository = Database.getRepository(User);
 
+// 사용자가 입력한 정보가 유효한지 확인하는 함수
+export const validUserInfoInput = (validProps: ValidUserInfoInput) => {
+  if (!validProps.username || !validProps.email) {
+    throw new Error('Username and email are required');
+  }
+  return;
+}
+
+// 사용자 회원가입 함수
 export const signUp = async (signUpProps : SignUpProps) => {
   try {
     const existingUser = await userRepository.findOne({
@@ -23,13 +37,16 @@ export const signUp = async (signUpProps : SignUpProps) => {
     if (existingUser) {
       throw new Error('User already exists');
     }
+
     // Hash password
     const hashedPassword = hashPassword({password: signUpProps.password});
+
     // Create new user
     const newUser = userRepository.create({
       ...signUpProps,
       password: hashedPassword
     })
+
     // Save user to database
     return await userRepository.save(newUser);
   } catch(error) {

@@ -4,6 +4,7 @@ import { responseSuccess, responseError } from "../utils/response";
 
 import {
   signUp as signUpService,
+  validUserInfoInput as validUserInfoInputService
 } from '../services/userService';
 
 // @route put /users/
@@ -11,8 +12,11 @@ import {
 export const signUp = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
+    validUserInfoInputService({username, email});
+
     const profile = req.file?.filename;
     const createdUser = await signUpService({username, email, password, profile});
+
     responseSuccess(res, createdUser, 'User created successfully', 201);
     return
   } catch (error) {
