@@ -123,5 +123,9 @@ export const signOut = async (token: string): Promise<void> => {
     const { userId } = decodedToken;
     await userTokenRepository.delete({ user: { id: userId } });
   } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('Internal Server Error');
   }
 }
