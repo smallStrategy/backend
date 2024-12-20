@@ -1,10 +1,12 @@
 import { Database } from '../db/index';
 import { UserEntity } from '../db/entities/userEntity';
+import { UserTokenEntity } from '../db/entities/userTokenEntity';
 
 import { hashPassword, comparePassword } from '../utils/bcrypt';
 import { generateToken } from '../utils/jwtConfig';
 
 const userRepository = Database.getRepository(UserEntity);
+const userTokenRepository = Database.getRepository(UserTokenEntity);
 
 // 사용자가 입력한 회원가입 정보가 유효한지 확인하는 함수
 interface ValidSignUpInput {
@@ -82,12 +84,26 @@ export const signIn = async (signInProps: SignInProps): Promise<{ token: string,
     if (!findUser) {
       throw new Error('User not found');
     }
+
     // compare password
     if (!comparePassword({password: signInProps.password, hashedPassword: findUser.password})) {
       throw new Error('Password is incorrect');
     }
+
     // create Token
     const token = generateToken({userId: findUser.id, role: findUser.role})
+
+    // delete old token 
+    await userTokenRepository.delete({ user: findUser });
+
+    // save token to Database
+    const userToken = userTokenRepository.create({
+      token,
+      user: findUser,
+      expires_at: new Date(Date.now() + 3600 * 1000),
+    });
+    await userTokenRepository.save(userToken);
+
     return { token, user: findUser };
   } catch (error) {
     if (error instanceof Error) {

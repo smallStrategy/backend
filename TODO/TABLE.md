@@ -1,8 +1,14 @@
 # 데이터베이스 테이블 설계 작업 순서
 
+## 0. 사용자 JWT 토큰 테이블 설정
+- [x] **사용자 JWT 토큰 테이블 (user_tokens)**: 사용자의 JWT 토큰을 관리합니다.
+  - `id`, `user_id`, `token`, `created_at`, `updated_at` 필드 추가
+  - `user_id`는 `users` 테이블의 외래키로 연결
+  - `token`은 사용자의 로그인 상태를 유지하는 JWT 토큰을 저장
+
 ## 1. 사용자 관리 테이블 설정
 
-- [x] **사용자 테이블 (Users)**: 사용자의 기본 정보와 계정 관리를 위한 테이블을 생성합니다.
+- [x] **사용자 테이블 (users)**: 사용자의 기본 정보와 계정 관리를 위한 테이블을 생성합니다.
   - `id`, `email`, `password`, `username`, `profile`, `bio`, `role`, `created_at`, `updated_at` 필드 추가
 
 ## 2. 게시글 관리 테이블 설정
