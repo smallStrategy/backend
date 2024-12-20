@@ -16,6 +16,7 @@ import { Database } from './db/index';
 
 // Middlewares
 import { setJsonContentType } from './middlewares/json';
+import { verifyTokenMiddleware } from './middlewares/verifyToken';
 
 // Config
 import { initialConfigFolder } from './utils/config';
@@ -44,6 +45,11 @@ Database.initialize()
 
 // Initial Settings
 initialConfigFolder();
+
+// test Ping & Pong 
+app.get('/ping', verifyTokenMiddleware, (req, res) => {
+  res.send('pong');
+});
 
 // Server Start
 app.listen(PORT, () => {

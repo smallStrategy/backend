@@ -10,10 +10,13 @@ import {
   signOut,
 } from '../controllers/userController';
 
+// Middleware
+import { verifyTokenMiddleware } from '../middlewares/verifyToken';
+
 const router = express.Router();
 
 router.post('/', uploadImage.single('profile'), signUp);
 router.post('/sign-in', signIn);
-router.post('/sign-out', signOut);
+router.post('/sign-out', verifyTokenMiddleware, signOut);
 
 export default router;

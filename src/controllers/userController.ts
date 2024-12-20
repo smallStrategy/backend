@@ -66,7 +66,11 @@ export const signOut = async (req: Request, res: Response) => {
     responseSuccess(res, undefined, 'User logged out successfully', 200);
     return
   } catch (error) {
-    responseError(res, 'Internal Server Error', 'Failed to logout', 500);
+    if (error instanceof Error) {
+      responseError(res, error.message, 'Failed to login', 400);
+      return
+    }
+    responseError(res, 'Internal Server Error', 'Failed to login', 500);
     return
   }
 }
