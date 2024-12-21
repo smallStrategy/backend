@@ -1,6 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
-
-import { UserTokenEntity } from './userTokenEntity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export interface UserModel {
   id: number;
@@ -43,10 +41,5 @@ export class UserEntity {
 
   @UpdateDateColumn()
   updatedAt!: Date;
-
-  // 사용자 로그인 기록 토큰을 저장하는 테이블과의 관계 설정
-  @OneToOne(() => UserTokenEntity, (userToken) => userToken.user)
-  @JoinColumn()
-  userToken?: UserTokenEntity;
 }
 

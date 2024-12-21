@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from './userEntity';
 
 export interface UserTokenModel {
@@ -14,7 +14,7 @@ export class UserTokenEntity {
   id!: number;
 
   // 사용자 테이블과의 관계 설정
-  @ManyToOne(() => UserEntity, (user) => user.userToken)
+  @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user!: UserEntity;
 
