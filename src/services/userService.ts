@@ -121,7 +121,7 @@ export const signOut = async (token: string): Promise<void> => {
       throw new Error('Invalid token');
     }
     const { userId } = decodedToken;
-    await userTokenRepository.delete({ user: { id: userId } });
+    await userTokenRepository.delete({ userId: userId });
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
