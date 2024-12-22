@@ -13,6 +13,10 @@ export class UserTokenEntity {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
+  // 사용자 ID를 명시적으로 지정
+  @Column({ type: 'int' })
+  userId!: number;
+
   // 사용자 테이블과의 관계 설정
   @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
