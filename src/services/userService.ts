@@ -107,7 +107,15 @@ export const signOut = async (token: string): Promise<void> => {
 interface GetUserProfileProps {
   userId: number;
 }
-export const getUserProfile = async (getProps: GetUserProfileProps): Promise<UserEntity> => {
+interface GetUserProfileResponse {
+  id: number;
+  username: string;
+  email: string;
+  bio: string;
+  profile: string;
+  createdAt: Date;
+}
+export const getUserProfile = async (getProps: GetUserProfileProps): Promise<GetUserProfileResponse> => {
   try {
     const findUser = await userRepository.findOne({
       where: { id: getProps.userId }
@@ -115,7 +123,8 @@ export const getUserProfile = async (getProps: GetUserProfileProps): Promise<Use
     if (!findUser) {
       throw new Error('User not found');
     }
-    return findUser;
+    const { password, role, ...userProfile } = findUser;
+    return userProfile;
   } catch (error) {
     handleError({error, message: 'User not found'});
     throw error;
