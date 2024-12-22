@@ -15,7 +15,7 @@ export class UserTokenEntity {
 
   // 사용자 테이블과의 관계 설정
   @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user!: UserEntity;
 
   @Column({ type: 'varchar', length: 255 })
