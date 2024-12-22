@@ -2,24 +2,13 @@ import { Database } from '../db/index';
 import { UserEntity } from '../db/entities/userEntity';
 import { UserTokenEntity } from '../db/entities/userTokenEntity';
 
+import { handleError } from '../utils/error';
 import { hashPassword, comparePassword } from '../utils/bcrypt';
 import { generateToken, decodeToken } from '../utils/jwtConfig';
+import { validSignUpInput, validSignInInput } from '../utils/validation/authValidation';
 
 const userRepository = Database.getRepository(UserEntity);
 const userTokenRepository = Database.getRepository(UserTokenEntity);
-
-// 사용자가 입력한 회원가입 정보가 유효한지 확인하는 함수
-interface ValidSignUpInput {
-  username: string;
-  email: string;
-  password: string;
-}
-export const validSignUpInput = (validProps: ValidSignUpInput) => {
-  if (!validProps.username || !validProps.email || !validProps.password) {
-    throw new Error('Username and email are required');
-  }
-  return;
-}
 
 // 사용자 회원가입 함수
 interface SignUpProps {
@@ -30,10 +19,10 @@ interface SignUpProps {
 }
 export const signUp = async (signUpProps : SignUpProps): Promise<UserEntity> => {
   try {
+    validSignUpInput(signUpProps);
+
     const existingUser = await userRepository.findOne({
       where: [
-        { username: signUpProps.username },
-        { email: signUpProps.email }
       ]
     });
     if (existingUser) {
@@ -52,23 +41,9 @@ export const signUp = async (signUpProps : SignUpProps): Promise<UserEntity> => 
     // Save user to database
     return await userRepository.save(newUser);
   } catch(error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Internal Server Error');
+    handleError({error, message: 'User already exists'});
+    throw error
   }
-}
-
-// 사용자가 입력한 로그인 정보가 유효한지 확인하는 함수
-interface ValidSignInInput {
-  email: string;
-  password: string;
-}
-export const validSignInInput = (validProps: ValidSignInInput) => {
-  if (!validProps.email || !validProps.password) {
-    throw new Error('Email and password are required');
-  }
-  return;
 }
 
 // 사용자 로그인 함수
@@ -78,6 +53,8 @@ interface SignInProps {
 }
 export const signIn = async (signInProps: SignInProps): Promise<{ token: string, user: UserEntity }> => {
   try {
+    validSignInInput(signInProps);
+
     const findUser = await userRepository.findOne({
       where: { email: signInProps.email }
     });
@@ -106,10 +83,8 @@ export const signIn = async (signInProps: SignInProps): Promise<{ token: string,
 
     return { token, user: findUser };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('Internal Server Error');
+    handleError({error, message: 'User not found'});
+    throw error;
   }
 }
 
@@ -123,9 +98,23 @@ export const signOut = async (token: string): Promise<void> => {
     const { userId } = decodedToken;
     await userTokenRepository.delete({ userId: userId });
   } catch (error) {
+    handleError({error, message: 'Invalid token'});
+    throw error;
+  }
+}
+
+// 사용자 프로필 조회 함수 
+/*
+interface GetUserProfileProps {
+  userId: number;
+}
+export const getUserProfile = async (getProps: GetUserProfileProps): Promise<UserEntity> => {
+  try {
+  } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
     throw new Error('Internal Server Error');
   }
 }
+*/

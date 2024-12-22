@@ -4,9 +4,7 @@ import { responseSuccess, responseError } from "../utils/response";
 
 import {
   signUp as signUpService,
-  validSignUpInput as validSignUpInputService,
   signIn as signInService,
-  validSignInInput as validSignInInputService,
   signOut as signOutService,
 } from '../services/userService';
 
@@ -15,7 +13,6 @@ import {
 export const signUp = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
-    validSignUpInputService({username, email, password});
 
     const profile = req.file?.filename;
     const createdUser = await signUpService({username, email, password, profile});
@@ -37,7 +34,6 @@ export const signUp = async (req: Request, res: Response) => {
 export const signIn = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    validSignInInputService({email, password});
 
     const { token, user } = await signInService({email, password});
     responseSuccess(res, { token, user }, 'User logged in successfully', 200);
