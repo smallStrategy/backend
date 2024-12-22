@@ -31,6 +31,8 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
       return
     }
 
+    req.body.token = token;
+
     next();
   } catch (error) {
     if (error instanceof Error) {

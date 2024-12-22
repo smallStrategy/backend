@@ -45,12 +45,7 @@ export const signIn = async (req: Request, res: Response) => {
 // @header Authorization Bearer token
 export const signOut = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.split('Bearer ')[1];
-    if (!token) {
-      responseError(res, 'Unauthorized', 'Token is required', 401);
-      return
-    }
-    await signOutService(token);
+    await signOutService(req.body.token);
     responseSuccess(res, undefined, 'User logged out successfully', 200);
     return
   } catch (error) {
@@ -64,11 +59,6 @@ export const signOut = async (req: Request, res: Response) => {
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
-    const token = req.headers.authorization?.split('Bearer ')[1];
-    if (!token) {
-      responseError(res, 'Unauthorized', 'Token is required', 401);
-      return
-    }
     const userProfile = await getUserProfileService({userId});
     responseSuccess(res, userProfile, 'User profile fetched successfully', 200);
     return
