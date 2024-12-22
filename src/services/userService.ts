@@ -104,17 +104,20 @@ export const signOut = async (token: string): Promise<void> => {
 }
 
 // 사용자 프로필 조회 함수 
-/*
 interface GetUserProfileProps {
   userId: number;
 }
 export const getUserProfile = async (getProps: GetUserProfileProps): Promise<UserEntity> => {
   try {
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
+    const findUser = await userRepository.findOne({
+      where: { id: getProps.userId }
+    });
+    if (!findUser) {
+      throw new Error('User not found');
     }
-    throw new Error('Internal Server Error');
+    return findUser;
+  } catch (error) {
+    handleError({error, message: 'User not found'});
+    throw error;
   }
 }
-*/

@@ -8,6 +8,7 @@ import {
   signUp,
   signIn,
   signOut,
+  getUserProfile,
 } from '../controllers/userController';
 
 // Middleware
@@ -20,7 +21,7 @@ const router = express.Router();
 router.post('/', uploadImage.single('profile'), signUp);
 router.post('/sign-in', signIn);
 router.post('/sign-out', verifyTokenMiddleware, signOut);
-// router.get('/:userId', verifyTokenMiddleware, getUserProfile);
+router.get('/:userId', verifyTokenMiddleware, getUserProfile);
 // router.put('/', verifyTokenMiddleware, updateProfile);
 // router.delete('/', verifyTokenMiddleware, deleteProfile);
 

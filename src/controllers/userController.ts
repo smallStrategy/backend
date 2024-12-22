@@ -7,6 +7,7 @@ import {
   signUp as signUpService,
   signIn as signInService,
   signOut as signOutService,
+  getUserProfile as getUserProfileService,
 } from '../services/userService';
 
 // @route put /users/
@@ -54,5 +55,24 @@ export const signOut = async (req: Request, res: Response) => {
     return
   } catch (error) {
     handleControllerError({res, error, message: 'Failed to logout', statusCode: 400});
+  }
+}
+
+// 사용자 프로필 조회
+// @route get /users/:userId
+// @header Authorization Bearer token
+export const getUserProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+    const token = req.headers.authorization?.split('Bearer ')[1];
+    if (!token) {
+      responseError(res, 'Unauthorized', 'Token is required', 401);
+      return
+    }
+    const userProfile = await getUserProfileService({userId});
+    responseSuccess(res, userProfile, 'User profile fetched successfully', 200);
+    return
+  } catch (error) {
+    handleControllerError({res, error, message: 'Failed to fetch user profile', statusCode: 400});
   }
 }
