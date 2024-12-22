@@ -5,7 +5,7 @@ interface ValidSignUpInput {
 }
 export const validSignUpInput = (validProps: ValidSignUpInput) => {
   if (!validProps.username || !validProps.email || !validProps.password) {
-    throw new Error('Username and email are required');
+    throw new Error('Username, Email, Password are required');
   }
   return;
 }
@@ -17,7 +17,7 @@ interface ValidSignInInput {
 }
 export const validSignInInput = (validProps: ValidSignInInput) => {
   if (!validProps.email || !validProps.password) {
-    throw new Error('Email and password are required');
+    throw new Error('Email and Password are required');
   }
   return;
 }

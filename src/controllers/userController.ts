@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { handleControllerError } from "../utils/error";
 import { responseSuccess, responseError } from "../utils/response";
 
 import {
@@ -20,12 +21,7 @@ export const signUp = async (req: Request, res: Response) => {
     responseSuccess(res, createdUser, 'User created successfully', 201);
     return
   } catch (error) {
-    if (error instanceof Error) {
-      responseError(res, error.message, 'Failed to create user', 400);
-      return
-    }
-    responseError(res, 'Internal Server Error', 'Failed to create user', 500);
-    return
+    handleControllerError({res, error, message: 'Failed to create user', statusCode: 400});
   }
 }
 
@@ -39,12 +35,7 @@ export const signIn = async (req: Request, res: Response) => {
     responseSuccess(res, { token, user }, 'User logged in successfully', 200);
     return
   } catch (error) {
-    if (error instanceof Error) {
-      responseError(res, error.message, 'Failed to login', 400);
-      return
-    }
-    responseError(res, 'Internal Server Error', 'Failed to login', 500);
-    return
+    handleControllerError({res, error, message: 'Failed to login', statusCode: 400});
   }
 }
 
@@ -62,11 +53,6 @@ export const signOut = async (req: Request, res: Response) => {
     responseSuccess(res, undefined, 'User logged out successfully', 200);
     return
   } catch (error) {
-    if (error instanceof Error) {
-      responseError(res, error.message, 'Failed to login', 400);
-      return
-    }
-    responseError(res, 'Internal Server Error', 'Failed to login', 500);
-    return
+    handleControllerError({res, error, message: 'Failed to logout', statusCode: 400});
   }
 }
