@@ -4,6 +4,7 @@ import { Database } from '../db/index';
 import { UserTokenEntity } from '../db/entities/userTokenEntity';
 
 import { responseError } from "../utils/response";
+import { decodeToken } from '../utils/jwtConfig';
 
 const userTokenRepository = Database.getRepository(UserTokenEntity);
 
@@ -31,7 +32,13 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
       return
     }
 
+    const decodedToken = decodeToken(token);
+    if (!decodedToken) {
+      throw new Error('Cannot decode token');
+    }
+    const { userId } = decodedToken;
     req.body.token = token;
+    req.body.userId = userId;
 
     next();
   } catch (error) {

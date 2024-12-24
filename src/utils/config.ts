@@ -1,3 +1,5 @@
+export const USER_PROFILE_PATH = 'media/user_profile';
+
 import { resolve, join } from 'path';
 import { existsSync, mkdirSync } from 'fs';
 
@@ -15,7 +17,7 @@ export const createFolder = (folderPath: string) => {
 // 프로그램 동작 시에 필요한 폴더를 생성하는 함수
 export const initialConfigFolder = () => {
   try {
-    createFolder('media/user_profile');
+    createFolder(USER_PROFILE_PATH);
   } catch (error) {
     console.error('폴더 생성 중 오류 발생:', error);
   }

@@ -4,7 +4,8 @@ import { UserTokenEntity } from '../db/entities/userTokenEntity';
 
 import { handleError } from '../utils/error';
 import { hashPassword, comparePassword } from '../utils/bcrypt';
-import { generateToken, decodeToken } from '../utils/jwtConfig';
+import { generateToken } from '../utils/jwtConfig';
+import { deleteUserProfile } from '../utils/fs';
 import { validSignUpInput, validSignInInput } from '../utils/validation/authValidation';
 
 const userRepository = Database.getRepository(UserEntity);
@@ -89,13 +90,8 @@ export const signIn = async (signInProps: SignInProps): Promise<{ token: string,
 }
 
 // 사용자 로그아웃 함수
-export const signOut = async (token: string): Promise<void> => {
+export const signOut = async (userId: number): Promise<void> => {
   try {
-    const decodedToken = decodeToken(token);
-    if (!decodedToken) {
-      throw new Error('Invalid token');
-    }
-    const { userId } = decodedToken;
     await userTokenRepository.delete({ userId: userId });
   } catch (error) {
     handleError({error, message: 'Invalid token'});
@@ -127,6 +123,44 @@ export const getUserProfile = async (getProps: GetUserProfileProps): Promise<Get
     return userProfile;
   } catch (error) {
     handleError({error, message: 'User not found'});
+    throw error;
+  }
+}
+
+// 사용자 프로필 수정 함수
+interface UpdateUserProfileProps {
+  userId: number;
+  username: string;
+  password: string;
+  bio: string;
+  profile?: string; // 만약 profile이 있다면 기존 profile을 삭제하고 새로운 profile을 저장
+}
+export const updateUserProfile = async (updateProps: UpdateUserProfileProps): Promise<void> => {
+  try {
+    const findUser = await userRepository.findOne({
+      where: { id: updateProps.userId }
+    });
+    if (!findUser) {
+      throw new Error('User not found');
+    }
+    if (!comparePassword({password: updateProps.password, hashedPassword: findUser.password})) {
+      throw new Error('Password is incorrect');
+    }
+    // update user profile data
+    findUser.username = updateProps.username;
+    findUser.bio = updateProps.bio;
+    // if profile exists, delete old profile and save new profile
+    if (updateProps.profile) {
+      if (findUser.profile) {
+        deleteUserProfile(findUser.profile);
+      }
+      findUser.profile = updateProps.profile;
+    }
+    // 업데이트 해준 후 저장
+    await userRepository.save(findUser);
+    return
+  } catch (error) {
+    handleError({error, message: 'Failed to update user profile'});
     throw error;
   }
 }

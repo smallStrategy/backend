@@ -26,7 +26,9 @@ const PORT = process.env.PORT || 8090;
 
 // load environment variables
 app.use(cors());
+app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // middleware
 app.use(setJsonContentType);

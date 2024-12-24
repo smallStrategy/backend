@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 
 import { handleControllerError } from "../utils/error";
-import { responseSuccess, responseError } from "../utils/response";
+import { responseSuccess } from "../utils/response";
 
 import {
   signUp as signUpService,
   signIn as signInService,
   signOut as signOutService,
   getUserProfile as getUserProfileService,
+  updateUserProfile as updateUserProfileService,
 } from '../services/userService';
 
 // @route put /users/
@@ -45,7 +46,7 @@ export const signIn = async (req: Request, res: Response) => {
 // @header Authorization Bearer token
 export const signOut = async (req: Request, res: Response) => {
   try {
-    await signOutService(req.body.token);
+    await signOutService(req.body.userId);
     responseSuccess(res, undefined, 'User logged out successfully', 200);
     return
   } catch (error) {
@@ -64,5 +65,22 @@ export const getUserProfile = async (req: Request, res: Response) => {
     return
   } catch (error) {
     handleControllerError({res, error, message: 'Failed to fetch user profile', statusCode: 400});
+  }
+}
+
+// 사용자 프로필 수정
+// @route patch /users
+// @header Authorization Bearer token
+export const updateUserProfile = async (req: Request, res: Response) => {
+  try {
+    const { username, password, bio } = req.body;
+    console.log(req.body);
+    const profile = req.file?.filename;
+
+    await updateUserProfileService({userId: req.body.userId, username, password, bio, profile});
+    responseSuccess(res, null, 'User profile updated successfully', 200);
+    return
+  } catch (error) {
+    handleControllerError({res, error, message: 'Failed to update user profile', statusCode: 400});
   }
 }
