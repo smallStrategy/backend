@@ -74,7 +74,6 @@ export const getUserProfile = async (req: Request, res: Response) => {
 export const updateUserProfile = async (req: Request, res: Response) => {
   try {
     const { username, password, bio } = req.body;
-    console.log(req.body);
     const profile = req.file?.filename;
 
     await updateUserProfileService({userId: req.body.userId, username, password, bio, profile});
