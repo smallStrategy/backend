@@ -164,3 +164,32 @@ export const updateUserProfile = async (updateProps: UpdateUserProfileProps): Pr
     throw error;
   }
 }
+
+// 사용자 비밀번호 수정 함수
+interface ResetPasswordProps {
+	userId: number;
+	oldPassword: string;
+	newPassword: string;
+}
+export const resetPassword = async (resetProps: ResetPasswordProps): Promise<void> => {
+	try {
+		const findUser = await userRepository.findOne({
+			where: { id: resetProps.userId }
+		});
+		if (!findUser) {
+			throw new Error('User not found');
+		}
+		// check copmare password
+		if (!comparePassword({password: resetProps.oldPassword, hashedPassword: findUser.password})) {
+			throw new Error('Password is incorrect');
+		}
+		// hash new password
+		const hashedPassword = hashPassword({password: resetProps.newPassword});
+		// update password
+		findUser.password = hashedPassword;
+		await userRepository.save(findUser);
+		return
+	} catch (error) {
+		handleError({error, message: 'Failed to reset password'});
+	}
+}

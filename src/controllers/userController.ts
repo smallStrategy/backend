@@ -9,6 +9,7 @@ import {
   signOut as signOutService,
   getUserProfile as getUserProfileService,
   updateUserProfile as updateUserProfileService,
+	resetPassword as resetPasswordService,
 } from '../services/userService';
 
 // @route put /users/
@@ -82,4 +83,17 @@ export const updateUserProfile = async (req: Request, res: Response) => {
   } catch (error) {
     handleControllerError({res, error, message: 'Failed to update user profile', statusCode: 400});
   }
+}
+
+// 사용자 비밀번호 변경 
+// @ route patch /users/reset-password
+// @ header Authorization Bearer token
+export const resetPassword = async (req: Request, res: Response) => {
+	try {
+		const { oldPassword, newPassword } = req.body;
+		await resetPasswordService({userId: req.body.userId, oldPassword, newPassword});
+		responseSuccess(res, null, 'Password reset successfully', 200);
+	} catch (error) {
+		handleControllerError({res, error, message: 'Failed to reset password', statusCode: 400});
+	}
 }

@@ -10,6 +10,7 @@ import {
   signOut,
   getUserProfile,
   updateUserProfile,
+	resetPassword,
 } from '../controllers/userController';
 
 // Middleware
@@ -24,6 +25,7 @@ router.post('/sign-in', signIn);
 router.post('/sign-out', verifyTokenMiddleware, signOut);
 router.get('/:userId', verifyTokenMiddleware, getUserProfile);
 router.patch('/', uploadImage.single('profile'), verifyTokenMiddleware, updateUserProfile);
+router.post('/reset-password', verifyTokenMiddleware, resetPassword);
 // router.delete('/', verifyTokenMiddleware, deleteProfile);
 
 export default router;
