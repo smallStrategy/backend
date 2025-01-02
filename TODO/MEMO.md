@@ -1,2 +1,12 @@
 # MEMO 
 
+PORT=5000
+JWT_SECRET=asdqwe123
+
+DB_USER=postgres
+DB_HOST=192.168.0.5
+DB_NAME=postgres
+DB_PASSWORD=postgres
+DB_PORT=5432
+
+SALT_ROUNDS=12
