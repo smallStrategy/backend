@@ -5,11 +5,11 @@ import { uploadImage } from '../utils/multer';
 
 // Controller
 import { 
-  signUp,
-  signIn,
-  signOut,
-  getUserProfile,
-  updateUserProfile,
+	signUp,
+	signIn,
+	signOut,
+	getUserProfile,
+	updateUserProfile,
 	resetPassword,
 } from '../controllers/userController';
 

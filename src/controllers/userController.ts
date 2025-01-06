@@ -4,11 +4,11 @@ import { handleControllerError } from "../utils/error";
 import { responseSuccess } from "../utils/response";
 
 import {
-  signUp as signUpService,
-  signIn as signInService,
-  signOut as signOutService,
-  getUserProfile as getUserProfileService,
-  updateUserProfile as updateUserProfileService,
+	signUp as signUpService,
+	signIn as signInService,
+	signOut as signOutService,
+	getUserProfile as getUserProfileService,
+	updateUserProfile as updateUserProfileService,
 	resetPassword as resetPasswordService,
 } from '../services/userService';
 
